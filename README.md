@@ -110,12 +110,8 @@ WHERE {
 
 ## Licentie
 
-Vul hier de gewenste licentie in, bijvoorbeeld:
-
 - [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) voor documentatie en voorbeelden;
 - [MIT](https://opensource.org/licenses/MIT) of [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0) voor het model zelf.
-
-Pas dit aan naar jullie eigen beleidskeuzes.
 
 ## Contact / bijdrage
 
