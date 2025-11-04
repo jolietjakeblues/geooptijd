@@ -23,8 +23,8 @@ Je kunt deze repository zo inladen in een triplestore (Fuseki, GraphDB, Blazegra
 In het model worden de volgende prefixen gebruikt:
 
 ```turtle
-@prefix tn:    <https://termennetwerk.nl/def/geotemporeel#> .
-@prefix ex:    <https://termennetwerk.nl/id/> .
+@prefix tn:    <https://xxx/def/geotemporeel#> .
+@prefix ex:    <https://xxx/id/> .
 @prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
 @prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
