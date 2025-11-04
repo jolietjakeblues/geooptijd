@@ -1,0 +1,17 @@
+{
+  "@context": "https://linkeddata.cultureelerfgoed.nl/context/lpo-context.jsonld",
+  "id": "https://linkeddata.cultureelerfgoed.nl/erfgeo/departementen/id/036b41a8-af6a-3e8e-8659-713a85d7661a",
+  "type": "lpo:Place",
+  "title": "Schelde",
+  "sourceDataset": "RCE departementen",
+  "names": [
+    { "toponym": "Schelde", "language": "nl" },
+    { "toponym": "Escaut", "language": "fr" }
+  ],
+  "geoms": [
+    { "geowkt": "POLYGON ((...))" }
+  ],
+  "whens": [
+    { "start": "1795", "end": "1814" }
+  ]
+}
