@@ -1,123 +1,110 @@
-# Termennetwerk Geo-Temporeel Model (Places in Time)
+# 🧭 Linked Places Ontologie (LPO) – Erfgeo Datasetmodel
 
-Dit project bevat een **lichtgewicht RDF/TRiG-profiel** voor geo-temporele modellering in het kader van het Termennetwerk, geïnspireerd door het idee van **“places in time”** en het **Linked Places Format (LPF)**.
+![License](https://img.shields.io/badge/license-CC--BY--4.0-blue)
+![RDF](https://img.shields.io/badge/format-RDF%2FJSON--LD-orange)
+![SHACL](https://img.shields.io/badge/validation-SHACL-green)
 
-Doel: erfgoedinstellingen in staat stellen om erfgoedobjecten te koppelen aan **plaatsen-in-de-tijd** (bijv. *Weesp (gemeente, 1812–1966)*), inclusief:
-- bestuurlijk type (gemeente, departement, provincie, …),
-- geldigheid in de tijd,
-- hiërarchie (deel van provincie/land),
-- geometrie (polygon/point),
-- bron en provenance.
+---
 
-## Bestanden
+## 📖 Overzicht
 
-- `geotemporeel-model.trig`  
-  Bevat:
-  - een **schema-graph** met klassen en eigenschappen (tn:Place, tn:PlaceTimeSlice, etc.);
-  - een **voorbeeld-graph** met o.a. *Weesp (gemeente, 1812–1966)* en een erfgoedobject dat eraan gekoppeld is.
+Dit project bevat de **Linked Places Ontologie (LPO)** en bijbehorende **datasetprofielen**, **SPARQL-constructies**, en **validatievormen (SHACL)**  
+zoals toegepast binnen het project **Erfgeo** van de Rijksdienst voor het Cultureel Erfgoed (RCE).
 
-Je kunt deze repository zo inladen in een triplestore (Fuseki, GraphDB, Blazegraph, …) of gebruiken als referentie voor eigen implementatie.
+Het doel van deze repository is om historische en ruimtelijke entiteiten (zoals **gemeenten**, **departementen**, **waterschappen** en **parochies**) eenduidig te modelleren en publiceren als **Linked Data** die compatibel is met de [Linked Pasts](https://linkedpasts.org/) en [Linked Places](https://github.com/LinkedPasts/linked-places) standaarden.
 
-## Namespaces
+---
 
-In het model worden de volgende prefixen gebruikt:
+## 🧩 Inhoud
 
-```turtle
-@prefix tn:    <https://xxx/def/geotemporeel#> .
-@prefix ex:    <https://xxx/id/> .
-@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
-@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix geo:   <http://www.opengis.net/ont/geosparql#> .
-@prefix dct:   <http://purl.org/dc/terms/> .
-@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
-@prefix prov:  <http://www.w3.org/ns/prov#> .
-```
+| Bestand | Beschrijving |
+|----------|---------------|
+| [`lpo-styleguide.md`](./lpo-styleguide.md) | De volledige style guide met modelprincipes, URI-patronen, en SPARQL-constructvoorbeelden. |
+| [`lpo-shapes.ttl`](./lpo-shapes.ttl) | SHACL-validatievormen voor `lpo:Place`, `lpo:PlaceName`, `lpo:When`, `lpo:Geom`, enz. |
+| [`ontology/lpo.ttl`](./ontology/lpo.ttl) | De formele OWL/Turtle-ontologie voor alle LPO-klassen en -eigenschappen. |
+| [`examples/`](./examples/) | Voorbeelddata in RDF/JSON-LD op basis van echte erfgeo-datasets. |
+| [`graphs/`](./graphs/) | Visualisaties van het datamodel (Graphviz DOT, SVG, PNG). |
 
-## Kernklassen
+---
 
-- `tn:Place`  
-  Abstracte plaats (continuïteit van de plaats in de tijd), subklasse van `skos:Concept`.  
-  Voorbeeld: *Weesp*, *Limburg*, *Noord-Holland*.
+## 🧱 Ontologie (samenvatting)
 
-- `tn:PlaceTimeSlice`  
-  Tijdsnede van een plaats: een bestuurlijke of functionele toestand van een plaats met een geldigheidsinterval.  
-  Voorbeeld: *Weesp (gemeente, 1812–1966)*, *Limburg (departement, Franse tijd)*.
+**Namespace:**  
+`https://example.org/lpo#`
 
-- `tn:Geometry`  
-  Ruimtelijke representatie (WKT, etc.) van een tijdsnede.
+**Belangrijkste klassen:**
 
-- `tn:Period`  
-  Historische periode (optioneel), zoals *Franse tijd*, *moderne tijd*.
+- `lpo:Place` – kernentiteit  
+- `lpo:PlaceName` – naamattestaties  
+- `lpo:PlaceType` – typologie (gemeente, departement, abdij, …)  
+- `lpo:PlaceGeom` – ruimtelijke representatie  
+- `lpo:When` – tijdsinterval  
+- `lpo:Citation` – bronverwijzing  
+- `lpo:SourceLabel` – labelinformatie van types  
+- `lpo:PlaceRelated` – relaties tussen plaatsen  
+- `lpo:PlaceDescription` – tekstuele toelichting  
+- `lpo:Period` – historische perioden  
 
-## Belangrijkste eigenschappen
+De ontologie volgt het RDF/OWL-principe van minimale afhankelijkheden en is **volledig JSON-LD compatibel**.
 
-- `tn:hasTimeSlice` – koppelt een `tn:Place` aan één of meerdere `tn:PlaceTimeSlice`-instanties.  
-- `tn:ofPlace` – inverse relatie: tijdsnede → plaats.  
-- `tn:validFrom` / `tn:validTo` – geldigheidsinterval van de tijdsnede.  
-- `tn:adminType` – bestuurlijk type (gemeente, provincie, departement, …).  
-- `tn:partOf` – hiërarchische relatie tussen tijdsnedes (bijv. gemeente ⊂ provincie).  
-- `tn:hasGeometry` – koppelt een tijdsnede aan een geometrie.  
-- `tn:hasPeriod` – koppelt een tijdsnede aan een historische periode.  
-- `tn:locatedIn` – koppelt een erfgoedobject aan een `tn:PlaceTimeSlice`.  
+---
 
-### Bron en provenance
+## 🧭 URI-structuur
 
-Voor bron- en herkomstinformatie worden beproefde vocabularia hergebruikt:
+| Type | Patroon | Voorbeeld |
+|------|----------|-----------|
+| `Place` | `https://linkeddata.cultureelerfgoed.nl/erfgeo/{dataset}/id/{localId}` | `.../gemeenten/id/s-Hertogenbosch-1812` |
+| `Geom` | `{PlaceURI}/geom/{n}` | `.../id/s-Hertogenbosch-1812/geom/1` |
+| `When` | `{PlaceURI}/when/{n}` | `.../id/s-Hertogenbosch-1812/when/1` |
+| `Name` | `{PlaceURI}/name/pref` of `/name/alt` | `.../id/s-Hertogenbosch-1812/name/pref` |
+| `Type` | `{PlaceURI}/type/{term}` | `.../id/s-Hertogenbosch-1812/type/gemeente` |
 
-- `dct:source` – inhoudelijke bron (dataset, publicatie, kaart).  
-- `dct:provenance` – tekstuele beschrijving van de herkomst/geschiedenis.  
-- `prov:wasDerivedFrom` – formele verwijzing naar een dataset of record waar de data van is afgeleid.  
+> Alle URI’s zijn bedoeld om **resolvabel** te zijn (HTML voor mensen, RDF voor machines).
 
-Alle drie zijn gespecificeerd als subeigenschappen (of specialisaties) van een generiek `tn:source`.
+---
 
-## Voorbeeld: Weesp (gemeente, 1812–1966)
+## ⚙️ Werkwijze
 
-In de `geotemporeel-model.trig`-file vind je:
+1. **Brondata inladen** in GraphDB (of andere triplestore).  
+2. **SPARQL CONSTRUCT** uitvoeren om data naar LPO-model te transformeren.  
+   - Zie de voorbeelden in de style guide (`lpo-styleguide.md`).  
+3. **Validatie uitvoeren** via SHACL:
+   - Laad `lpo-shapes.ttl` als shapes graph.  
+   - Gebruik GraphDB’s “SHACL Validation” functie.  
+4. **Exporteren** als JSON-LD (met gemeenschappelijke `@context`).  
+   - Gebruik de context:  
+     [`https://linkeddata.cultureelerfgoed.nl/context/lpo-context.jsonld`](https://linkeddata.cultureelerfgoed.nl/context/lpo-context.jsonld)  
 
-- een abstracte `tn:Place` voor **Weesp**;
-- een `tn:PlaceTimeSlice` voor **Weesp (gemeente, 1812–1966)**;
-- een `tn:Geometry` met (fictieve) WKT-geometrie voor 1950;
-- een `tn:PlaceTimeSlice` voor **Noord-Holland (provincie, 1840–heden)**;
-- een erfgoedobject dat via `tn:locatedIn` gekoppeld is aan de tijdsnede van Weesp.
+---
 
-Dit voorbeeld kan direct gebruikt worden als referentie bij het ontwerpen van query’s (SPARQL), UI-ontwerpen, of mappings naar Linked Places Format (LPF / GeoJSON-T).
+## 🧩 Validatie
 
-## Gebruik in een triplestore
+SHACL-validatie volgt de shapes in [`lpo-shapes.ttl`](./lpo-shapes.ttl):
 
-Voorbeeld: inladen in Apache Jena Fuseki (CLI):
+- `lposh:PlaceShape`  
+- `lposh:PlaceNameShape`  
+- `lposh:PlaceGeomShape`  
+- `lposh:WhenShape`  
+- `lposh:PlaceTypeShape`  
+- `lposh:CitationShape`
+
+### Voorbeeld GraphDB-validatie
+
+1. Ga naar **“SHACL Validation”** in GraphDB.  
+2. Kies je datasetgraph als **data graph**.  
+3. Kies `lpo-shapes.ttl` als **shapes graph**.  
+4. Klik **Validate** → rapport toont ontbrekende properties of foutieve types.
+
+---
+
+## 🧭 Diagrammen
+
+Visuele representaties van de ontologie staan in [`graphs/`](./graphs).
+
+- [Volledig model (Graphviz DOT)](https://dreampuf.github.io/GraphvizOnline/#digraph%20LPO_Place_Model%20%7B%0A%20rankdir%3DLR%3B...)  
+- [Blank nodes vs URI’s (kleurenschema)](https://dreampuf.github.io/GraphvizOnline/#digraph%20LPO_BlankNodes%20%7B%0A%20rankdir%3DLR%3B...)  
+
+Je kunt deze DOT-bestanden ook lokaal renderen naar SVG of PNG:
 
 ```bash
-# Maak een dataset
-tdb2.tdbloader --loc=dataset geotemporeel-model.trig
-```
-
-Daarna kun je SPARQL-query’s schrijven als:
-
-```sparql
-PREFIX tn:   <https://termennetwerk.nl/def/geotemporeel#>
-PREFIX ex:   <https://termennetwerk.nl/id/>
-PREFIX dct:  <http://purl.org/dc/terms/>
-
-SELECT ?object ?title
-WHERE {
-  GRAPH <https://termennetwerk.nl/graph/examples> {
-    ?object dct:title ?title ;
-            tn:locatedIn ex:placetimeslice/weesp_gemeente_1812_1966 .
-  }
-}
-```
-
-## Licentie
-
-- [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) voor documentatie en voorbeelden;
-- [MIT](https://opensource.org/licenses/MIT) of [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0) voor het model zelf.
-
-## Contact / bijdrage
-
-Suggesties, issues en pull requests zijn welkom.  
-Je kunt bijvoorbeeld bijdragen door:
-
-- extra voorbeelden toe te voegen (andere gemeenten, departement Limburg, Veerle, …);
-- mappings naar specifieke datasets (Topotijdreis, HISGIS, Kadaster) toe te voegen;
-- uitbreidingen voor o.a. periodes, rollen, of meer formele tijdsmodellering (OWL-Time, CIDOC CRM, CRMgeo).
+dot -Tsvg graphs/lpo_model.dot -o graphs/lpo_model.svg
