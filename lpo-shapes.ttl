@@ -1,0 +1,221 @@
+@prefix sh:  <http://www.w3.org/ns/shacl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix lpo: <https://example.org/lpo#> .
+@prefix lposh: <https://example.org/lpo/shapes#> .
+
+lposh:PlaceShape
+  a sh:NodeShape ;
+  sh:targetClass lpo:Place ;
+
+  # Type verplicht
+  sh:property [
+    sh:path rdf:type ;
+    sh:hasValue lpo:Place ;
+    sh:minCount 1 ;
+  ] ;
+
+  # Titel
+  sh:property [
+    sh:path lpo:hasTitle ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] ;
+
+  # Source-id
+  sh:property [
+    sh:path lpo:sourceId ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] ;
+
+  # Datasetnaam
+  sh:property [
+    sh:path lpo:sourceDataset ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] ;
+
+  # Dataset-URI
+  sh:property [
+    sh:path lpo:sourceDatasetURI ;
+    sh:datatype xsd:anyURI ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] ;
+
+  # Minimaal één naam
+  sh:property [
+    sh:path lpo:hasName ;
+    sh:class lpo:PlaceName ;
+    sh:minCount 1 ;
+  ] ;
+
+  # Minimaal één type
+  sh:property [
+    sh:path lpo:hasType ;
+    sh:class lpo:PlaceType ;
+    sh:minCount 1 ;
+  ] ;
+
+  # Geometrie (optioneel, maar als aanwezig: moet PlaceGeom zijn)
+  sh:property [
+    sh:path lpo:hasGeom ;
+    sh:class lpo:PlaceGeom ;
+    sh:minCount 0 ;
+  ] ;
+
+  # When (optioneel, maar als aanwezig: moet When zijn)
+  sh:property [
+    sh:path lpo:hasWhen ;
+    sh:class lpo:When ;
+    sh:minCount 0 ;
+  ] .
+
+lposh:PlaceNameShape
+  a sh:NodeShape ;
+  sh:targetClass lpo:PlaceName ;
+
+  sh:property [
+    sh:path lpo:toponym ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+  ] ;
+
+  sh:property [
+    sh:path lpo:language ;
+    sh:datatype xsd:string ;
+    sh:minCount 0 ;
+  ] .
+
+lposh:PlaceGeomShape
+  a sh:NodeShape ;
+  sh:targetClass lpo:PlaceGeom ;
+
+  sh:property [
+    sh:path lpo:wktValue ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+  ] ;
+
+  sh:property [
+    sh:path lpo:reprPoint ;
+    sh:datatype xsd:string ;
+    sh:minCount 0 ;
+  ] ;
+
+  sh:property [
+    sh:path lpo:s2CellId ;
+    sh:datatype xsd:string ;
+    sh:minCount 0 ;
+  ] ;
+
+  sh:property [
+    sh:path lpo:certainty ;
+    sh:datatype xsd:string ;
+    sh:minCount 0 ;
+  ] .
+
+lposh:WhenShape
+  a sh:NodeShape ;
+  sh:targetClass lpo:When ;
+
+  sh:property [
+    sh:path lpo:start ;
+    sh:datatype xsd:string ;
+    sh:minCount 0 ;
+  ] ;
+
+  sh:property [
+    sh:path lpo:end ;
+    sh:datatype xsd:string ;
+    sh:minCount 0 ;
+  ] ;
+
+  sh:property [
+    sh:path lpo:earliest ;
+    sh:datatype xsd:string ;
+    sh:minCount 0 ;
+  ] ;
+
+  sh:property [
+    sh:path lpo:latest ;
+    sh:datatype xsd:string ;
+    sh:minCount 0 ;
+  ] ;
+
+  sh:property [
+    sh:path lpo:duration ;
+    sh:datatype xsd:string ;
+    sh:minCount 0 ;
+  ] ;
+
+  # Rule of thumb: minstens start of end
+  sh:constraint [
+    a sh:SPARQLConstraint ;
+    sh:message "When should have at least a start or end date." ;
+    sh:select """
+      SELECT ?this
+      WHERE {
+        FILTER ( NOT EXISTS { ?this lpo:start ?s } &&
+                NOT EXISTS { ?this lpo:end ?e } )
+      }
+    """ ;
+  ] .
+
+lposh:PlaceTypeShape
+  a sh:NodeShape ;
+  sh:targetClass lpo:PlaceType ;
+
+  sh:property [
+    sh:path lpo:identifier ;
+    sh:datatype xsd:anyURI ;
+    sh:minCount 0 ;        # mag ook REQUIRED worden
+  ] ;
+
+  sh:property [
+    sh:path lpo:typeLabel ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+  ] ;
+
+  sh:property [
+    sh:path lpo:hasSourceLabel ;
+    sh:class lpo:SourceLabel ;
+    sh:minCount 0 ;
+  ] .
+
+lposh:SourceLabelShape
+  a sh:NodeShape ;
+  sh:targetClass lpo:SourceLabel ;
+
+  sh:property [
+    sh:path lpo:labelValue ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+  ] ;
+
+  sh:property [
+    sh:path lpo:labelLanguage ;
+    sh:datatype xsd:string ;
+    sh:minCount 0 ;
+  ] .
+
+lposh:CitationShape
+  a sh:NodeShape ;
+  sh:targetClass lpo:Citation ;
+
+  sh:property [
+    sh:path lpo:citationURI ;
+    sh:datatype xsd:anyURI ;
+    sh:minCount 1 ;
+  ] ;
+
+  sh:property [
+    sh:path lpo:sourceYear ;
+    sh:datatype xsd:gYear ;
+    sh:minCount 0 ;
+  ] .
