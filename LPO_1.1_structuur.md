@@ -1,9 +1,9 @@
-# Linked Pasts Ontology (LPO) 1.1 – Tekstuele structuur
+# Linked Pasts Ontology (LPO) 1.1 – Uitgebreide structuur en datagebruik
 
 ## 🧭 Overzicht
 
 Deze Markdown bevat een tekstuele en hiërarchische representatie van de LPO-ontologie (versie 1.1, Richard Light, 2020).  
-Het doel is om de structuur, relaties en semantische samenhang binnen LPO inzichtelijk te maken.
+Naast de conceptuele structuur bevat dit document nu ook **praktische informatie over gebruik, verplichting, multipliciteit en datamodellering**.
 
 ---
 
@@ -134,31 +134,104 @@ geojson-t:geometry
 
 ---
 
-## 6. Overzicht in samenvattende boom
+## 6. Datagebruik, verplichtingen en cardinaliteit
 
-```
-geojson:FeatureCollection
- └── hasFeature → geojson:Feature
-      └── geojson-t:geometry → lpo:Setting
-           ├── when → lpo:Timespan
-           │    ├── has_start → time:ProperInterval
-           │    ├── has_end → time:ProperInterval
-           │    ├── earliest/latest/in → time:DateTimeDescription
-           │    └── period → lpo:PeriodDefinition
-           └── setting → geojson:Point
-```
+### 🧩 geojson:FeatureCollection
 
-```
-lawd:Attestation
- ├── NameAttestation (→ toponym)
- ├── TypeAttestation
- ├── RelAttestation (→ relation_type, relation_to)
- └── LinkAttestation
+| Eigenschap | Range | Verplicht | Meervoudig | Beschrijving |
+|-------------|--------|------------|--------------|---------------|
+| `lpo:hasFeature` | `geojson:Feature` | ✅ ja | ✅ ja | Een verzameling features die samen een collectie vormen. |
+
+---
+
+### 📍 geojson:Feature
+
+| Eigenschap | Range | Verplicht | Meervoudig | Beschrijving |
+|-------------|--------|------------|--------------|---------------|
+| `geojson-t:geometry` | `lpo:Setting` | ✅ ja | ❌ nee (1 geometry per feature) | De geometrie en bijbehorende ruimte-tijdcontext. |
+
+---
+
+### 🌍 lpo:Setting
+
+| Eigenschap | Range | Verplicht | Meervoudig | Beschrijving |
+|-------------|--------|------------|--------------|---------------|
+| `lpo:when` | `lpo:Timespan` | ⚙️ optioneel | ❌ nee (functioneel) | Tijd waarin de Setting geldig is. |
+| `lpo:setting` | `geojson:Point` | ⚙️ optioneel | ❌ nee | Punt dat de locatie aangeeft. |
+
+> Een `lpo:Setting` kan dus één ruimtelijke geometrie en één tijdsperiode hebben.
+
+---
+
+### ⏳ lpo:Timespan
+
+| Eigenschap | Range | Verplicht | Meervoudig | Beschrijving |
+|-------------|--------|------------|--------------|---------------|
+| `lpo:has_start` | `time:ProperInterval` | ⚙️ optioneel | ❌ nee | Begin van de periode |
+| `lpo:has_end` | `time:ProperInterval` | ⚙️ optioneel | ❌ nee | Einde van de periode |
+| `lpo:earliest` | `time:DateTimeDescription` | ⚙️ optioneel | ✅ ja | Vroegste mogelijke datum |
+| `lpo:latest` | `time:DateTimeDescription` | ⚙️ optioneel | ✅ ja | Laatste mogelijke datum |
+| `lpo:in` | `time:DateTimeDescription` | ⚙️ optioneel | ✅ ja | Moment binnen de tijdsperiode |
+| `lpo:period` | `lpo:PeriodDefinition` | ⚙️ optioneel | ✅ ja | Historische periode (bijv. uit PeriodO) |
+
+---
+
+### 📜 Attestation-klassen
+
+| Klasse | Eigenschappen | Verplicht | Meervoudig | Beschrijving |
+|---------|----------------|------------|--------------|---------------|
+| `lpo:NameAttestation` | `lpo:toponym`, `lpo:has_certainty`, `lpo:source_label`, `lpo:when` | ✅ toponym | ⚙️ rest optioneel | Getuigt van een naam die ergens gebruikt werd. |
+| `lpo:TypeAttestation` | `lpo:has_certainty`, `lpo:source_label` | ⚙️ optioneel | ✅ ja | Getuigt van een classificatie of type. |
+| `lpo:RelAttestation` | `lpo:relation_type`, `lpo:relation_to`, `lpo:has_certainty`, `lpo:source_label` | ✅ relation_type + relation_to | ✅ ja | Getuigt van een relatie tussen entiteiten (bv. "onderdeel van"). |
+| `lpo:LinkAttestation` | `lpo:source_label`, `lpo:has_certainty` | ⚙️ optioneel | ✅ ja | Getuigt van een externe koppeling (bijv. URI). |
+
+---
+
+### 🕰️ Functionele eigenschappen
+
+| Eigenschap | Betekenis |
+|-------------|------------|
+| `lpo:when` | Functioneel – slechts één tijdsperiode per Setting. |
+| `geojson-t:geometry` | Functioneel – één geometrie per Feature. |
+
+---
+
+### 📚 Afleidbare gebruiksregels
+
+| Regel | Betekenis |
+|-------|------------|
+| Een `Feature` **moet** minimaal één geometrie (`geojson-t:geometry`) hebben. |
+| Een `Setting` **mag** maar één tijdsinterval (`lpo:when`) hebben. |
+| Een `Timespan` **heeft minimaal één tijdsaanduiding** (`earliest`, `in`, of `period`). |
+| Een `NameAttestation` **heeft altijd een toponym**. |
+| Certainty en source_label **kunnen herhaald worden** als er meerdere bronnen zijn. |
+
+---
+
+## 7. RDF-voorbeeld
+
+```ttl
+:Feature1 a geojson:Feature ;
+    geojson-t:geometry [
+        a lpo:Setting ;
+        lpo:when [
+            a lpo:Timespan ;
+            lpo:earliest "1795-01-01"^^xsd:date ;
+            lpo:latest "1814-01-01"^^xsd:date
+        ] ;
+        lpo:setting "POINT(4.89 52.37)"^^geo:wktLiteral
+    ] ;
+    lpo:name_attestation [
+        a lpo:NameAttestation ;
+        lpo:toponym "Departement van de Schelde" ;
+        lpo:source_label "Bron: Franse administratie" ;
+        lpo:has_certainty "certain"
+    ] .
 ```
 
 ---
 
-## 7. Kernbegrippen in natuurlijke taal
+## 8. Kernbegrippen in natuurlijke taal
 
 | Concept | Beschrijving |
 |----------|---------------|
