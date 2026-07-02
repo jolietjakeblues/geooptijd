@@ -1,8 +1,8 @@
 @prefix sh:  <http://www.w3.org/ns/shacl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix lpo: <https://example.org/lpo#> .
-@prefix lposh: <https://example.org/lpo/shapes#> .
+@prefix lpo: <https://linkeddata.cultureelerfgoed.nl/def/lpo#> .
+@prefix lposh: <https://linkeddata.cultureelerfgoed.nl/def/lpo/shapes#> .
 
 lposh:PlaceShape
   a sh:NodeShape ;

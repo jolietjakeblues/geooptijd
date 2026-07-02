@@ -1,0 +1,152 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix lpo:  <https://linkeddata.cultureelerfgoed.nl/def/lpo#> .
+@prefix geo:  <http://www.opengis.net/ont/geosparql#> .
+
+# Formele ontologie voor de Linked Places Ontologie (LPO) - Erfgeo-profiel,
+# zoals beschreven in lpo-styleguide.md. Dit is het door RCE/Erfgeo gebruikte
+# profiel (camelCase termen zoals lpo:hasName), niet identiek aan de
+# oorspronkelijke Linked Pasts Ontology v1.1 (Richard Light, zie
+# LPO_1.1_structuur.md), die snake_case termen gebruikt (bv. lpo:name_attestation).
+# Beide delen het prefix "lpo" maar zijn verschillende vocabulaires.
+
+<https://linkeddata.cultureelerfgoed.nl/def/lpo>
+  a owl:Ontology ;
+  rdfs:label "Linked Places Ontologie (LPO) - Erfgeo Datasetmodel"@nl ;
+  rdfs:comment "Ontologie voor het modelleren van historische en ruimtelijke entiteiten binnen het Erfgeo-project van de Rijksdienst voor het Cultureel Erfgoed."@nl .
+
+# ============================================================
+# Klassen
+# ============================================================
+
+lpo:Place a owl:Class ;
+  rdfs:label "Place"@en, "Plaats"@nl ;
+  rdfs:comment "Kernentiteit voor elke historische of moderne plaats (gemeente, departement, waterschap, parochie, ...)."@nl .
+
+lpo:PlaceName a owl:Class ;
+  rdfs:label "PlaceName"@en, "Plaatsnaam"@nl ;
+  rdfs:comment "Naamattestatie van een plaats, met taal."@nl .
+
+lpo:PlaceType a owl:Class ;
+  rdfs:label "PlaceType"@en, "Plaatstype"@nl ;
+  rdfs:comment "Typologie van een plaats (gemeente, departement, abdij, ...)."@nl .
+
+lpo:SourceLabel a owl:Class ;
+  rdfs:label "SourceLabel"@en, "Bronlabel"@nl ;
+  rdfs:comment "Labelinformatie van een PlaceType zoals aangeleverd door de bron."@nl .
+
+lpo:PlaceGeom a owl:Class ;
+  rdfs:label "PlaceGeom"@en, "Plaatsgeometrie"@nl ;
+  rdfs:comment "Ruimtelijke representatie van een plaats."@nl .
+
+lpo:When a owl:Class ;
+  rdfs:label "When"@en, "Tijdsinterval"@nl ;
+  rdfs:comment "Tijdsinterval of bestaansduur van een plaats of attestatie."@nl .
+
+lpo:PlaceRelated a owl:Class ;
+  rdfs:label "PlaceRelated"@en, "Plaatsrelatie"@nl ;
+  rdfs:comment "Relatie tussen twee plaatsen."@nl .
+
+lpo:PlaceDescription a owl:Class ;
+  rdfs:label "PlaceDescription"@en, "Plaatsbeschrijving"@nl ;
+  rdfs:comment "Tekstuele toelichting bij een plaats, met taal."@nl .
+
+lpo:Citation a owl:Class ;
+  rdfs:label "Citation"@en, "Bronvermelding"@nl ;
+  rdfs:comment "Bronverwijzing voor een plaats of attestatie."@nl .
+
+lpo:Period a owl:Class ;
+  rdfs:label "Period"@en, "Periode"@nl ;
+  rdfs:comment "Historische periode."@nl .
+
+# ============================================================
+# Objecteigenschappen (Place -> class)
+# ============================================================
+
+lpo:hasName a owl:ObjectProperty ;
+  rdfs:domain lpo:Place ; rdfs:range lpo:PlaceName ;
+  rdfs:label "hasName"@en .
+
+lpo:hasType a owl:ObjectProperty ;
+  rdfs:domain lpo:Place ; rdfs:range lpo:PlaceType ;
+  rdfs:label "hasType"@en .
+
+lpo:hasGeom a owl:ObjectProperty ;
+  rdfs:domain lpo:Place ; rdfs:range lpo:PlaceGeom ;
+  rdfs:label "hasGeom"@en .
+
+lpo:hasWhen a owl:ObjectProperty ;
+  rdfs:domain lpo:Place ; rdfs:range lpo:When ;
+  rdfs:label "hasWhen"@en .
+
+lpo:hasRelation a owl:ObjectProperty ;
+  rdfs:domain lpo:Place ; rdfs:range lpo:PlaceRelated ;
+  rdfs:label "hasRelation"@en .
+
+lpo:hasDescription a owl:ObjectProperty ;
+  rdfs:domain lpo:Place ; rdfs:range lpo:PlaceDescription ;
+  rdfs:label "hasDescription"@en .
+
+lpo:hasCitation a owl:ObjectProperty ;
+  rdfs:domain lpo:Place ; rdfs:range lpo:Citation ;
+  rdfs:label "hasCitation"@en .
+
+lpo:hasSourceLabel a owl:ObjectProperty ;
+  rdfs:domain lpo:PlaceType ; rdfs:range lpo:SourceLabel ;
+  rdfs:label "hasSourceLabel"@en .
+
+# ============================================================
+# Datatype-eigenschappen
+# ============================================================
+
+# --- Place ---
+lpo:hasTitle a owl:DatatypeProperty ; rdfs:domain lpo:Place ; rdfs:range xsd:string .
+lpo:sourceId a owl:DatatypeProperty ; rdfs:domain lpo:Place ; rdfs:range xsd:string .
+lpo:sourceDataset a owl:DatatypeProperty ; rdfs:domain lpo:Place ; rdfs:range xsd:string .
+lpo:sourceDatasetURI a owl:DatatypeProperty ; rdfs:domain lpo:Place ; rdfs:range xsd:anyURI .
+lpo:hasCountryCode a owl:DatatypeProperty ; rdfs:domain lpo:Place ; rdfs:range xsd:string .
+lpo:hasFeatureClass a owl:DatatypeProperty ; rdfs:domain lpo:Place ; rdfs:range xsd:string .
+lpo:label a owl:DatatypeProperty ; rdfs:domain lpo:Place ; rdfs:range xsd:string .
+
+# --- PlaceName ---
+lpo:toponym a owl:DatatypeProperty ; rdfs:domain lpo:PlaceName ; rdfs:range xsd:string .
+lpo:language a owl:DatatypeProperty ; rdfs:range xsd:string ;
+  rdfs:comment "Herbruikbaar over PlaceName en PlaceDescription."@nl .
+
+# --- PlaceType / SourceLabel ---
+lpo:identifier a owl:DatatypeProperty ; rdfs:domain lpo:PlaceType ; rdfs:range xsd:anyURI .
+lpo:typeLabel a owl:DatatypeProperty ; rdfs:domain lpo:PlaceType ; rdfs:range xsd:string .
+lpo:labelValue a owl:DatatypeProperty ; rdfs:domain lpo:SourceLabel ; rdfs:range xsd:string .
+lpo:labelLanguage a owl:DatatypeProperty ; rdfs:domain lpo:SourceLabel ; rdfs:range xsd:string .
+
+# --- PlaceGeom ---
+lpo:wktValue a owl:DatatypeProperty ; rdfs:domain lpo:PlaceGeom ; rdfs:range xsd:string .
+lpo:s2CellId a owl:DatatypeProperty ; rdfs:domain lpo:PlaceGeom ; rdfs:range xsd:string .
+lpo:reprPoint a owl:DatatypeProperty ; rdfs:domain lpo:PlaceGeom ; rdfs:range xsd:string .
+lpo:certainty a owl:DatatypeProperty ; rdfs:range xsd:string ;
+  rdfs:comment "Herbruikbaar over PlaceGeom en PlaceRelated."@nl .
+
+# --- When ---
+lpo:sourceYear a owl:DatatypeProperty ; rdfs:range xsd:gYear ;
+  rdfs:comment "Herbruikbaar over When en Citation."@nl .
+lpo:duration a owl:DatatypeProperty ; rdfs:domain lpo:When ; rdfs:range xsd:string .
+lpo:start a owl:DatatypeProperty ; rdfs:domain lpo:When ; rdfs:range xsd:string .
+lpo:end a owl:DatatypeProperty ; rdfs:domain lpo:When ; rdfs:range xsd:string .
+lpo:earliest a owl:DatatypeProperty ; rdfs:domain lpo:When ; rdfs:range xsd:string .
+lpo:latest a owl:DatatypeProperty ; rdfs:domain lpo:When ; rdfs:range xsd:string .
+
+# --- PlaceRelated ---
+lpo:relationType a owl:DatatypeProperty ; rdfs:domain lpo:PlaceRelated ; rdfs:range xsd:anyURI .
+lpo:relationTo a owl:DatatypeProperty ; rdfs:domain lpo:PlaceRelated ; rdfs:range xsd:anyURI .
+
+# --- PlaceDescription ---
+lpo:descriptionValue a owl:DatatypeProperty ; rdfs:domain lpo:PlaceDescription ; rdfs:range xsd:string .
+
+# --- Period ---
+lpo:periodName a owl:DatatypeProperty ; rdfs:domain lpo:Period ; rdfs:range xsd:string .
+lpo:periodURI a owl:DatatypeProperty ; rdfs:domain lpo:Period ; rdfs:range xsd:anyURI .
+
+# --- Citation ---
+lpo:citationURI a owl:DatatypeProperty ; rdfs:domain lpo:Citation ; rdfs:range xsd:anyURI .

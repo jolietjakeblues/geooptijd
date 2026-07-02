@@ -8,14 +8,14 @@ _Linked Places Ontologie (LPO) – Erfgeo Datasetmodel_
 
 **Versie:** 1.0  
 **Datum:** 2025-11-04  
-**Ontologie-IRI:** <https://example.org/lpo#>
+**Ontologie-IRI:** <https://linkeddata.cultureelerfgoed.nl/def/lpo#>
 
 ---
 
 ## 🎯 Doel
 
 Deze gids beschrijft hoe erfgeo-datasets (zoals **Gemeentegeschiedenis**, **RCE departementen**, enz.) gemodelleerd worden met de LPO-ontologie  
-(<https://example.org/lpo#>).
+(<https://linkeddata.cultureelerfgoed.nl/def/lpo#>).
 
 Doelen:
 
@@ -59,7 +59,7 @@ Doelen:
 
 ## 🏗️ 3. Klassen & eigenschappen
 
-**Ontologie:** <https://example.org/lpo#>
+**Ontologie:** <https://linkeddata.cultureelerfgoed.nl/def/lpo#>
 
 | Klasse | Gebruik | Belangrijke eigenschappen |
 |--------|---------|---------------------------|

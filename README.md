@@ -1,4 +1,4 @@
-# 🧭 Linked Places Ontologie (LPO) – Erfgeo Datasetmodel
+# Linked Places Ontologie (LPO) – Erfgeo Datasetmodel
 
 ![License](https://img.shields.io/badge/license-CC--BY--4.0-blue)
 ![RDF](https://img.shields.io/badge/format-RDF%2FJSON--LD-orange)
@@ -6,7 +6,7 @@
 
 ---
 
-## 📖 Overzicht
+## Overzicht
 
 Dit project bevat de **Linked Places Ontologie (LPO)** en bijbehorende **datasetprofielen**, **SPARQL-constructies**, en **validatievormen (SHACL)**  
 zoals toegepast binnen het project **Erfgeo** van de Rijksdienst voor het Cultureel Erfgoed (RCE).
@@ -15,22 +15,25 @@ Het doel van deze repository is om historische en ruimtelijke entiteiten (zoals 
 
 ---
 
-## 🧩 Inhoud
+## Inhoud
 
 | Bestand | Beschrijving |
 |----------|---------------|
 | [`lpo-styleguide.md`](./lpo-styleguide.md) | De volledige style guide met modelprincipes, URI-patronen, en SPARQL-constructvoorbeelden. |
-| [`lpo-shapes.ttl`](./lpo-shapes.ttl) | SHACL-validatievormen voor `lpo:Place`, `lpo:PlaceName`, `lpo:When`, `lpo:Geom`, enz. |
+| [`lpo-shapes.ttl`](./lpo-shapes.ttl) | SHACL-validatievormen voor `lpo:Place`, `lpo:PlaceName`, `lpo:When`, `lpo:PlaceGeom`, enz. |
 | [`ontology/lpo.ttl`](./ontology/lpo.ttl) | De formele OWL/Turtle-ontologie voor alle LPO-klassen en -eigenschappen. |
-| [`examples/`](./examples/) | Voorbeelddata in RDF/JSON-LD op basis van echte erfgeo-datasets. |
-| [`graphs/`](./graphs/) | Visualisaties van het datamodel (Graphviz DOT, SVG, PNG). |
+| [`context/lpo-context.jsonld`](./context/lpo-context.jsonld) | De JSON-LD `@context` die de korte veldnamen in `examples/` koppelt aan de LPO-termen. |
+| [`examples/`](./examples/) | Voorbeelddata in JSON-LD op basis van echte erfgeo-datasets. |
+| [`LPO_1.1_structuur.md`](./LPO_1.1_structuur.md) | Achtergronddocumentatie over de oorspronkelijke Linked Pasts Ontology v1.1 waarop dit profiel voortbouwt. |
+
+> De Graphviz-diagrammen staan niet als losse bestanden in dit project, maar als DOT-code ingebed in `lpo-styleguide.md` (zie [Diagrammen](#diagrammen) hieronder).
 
 ---
 
-## 🧱 Ontologie (samenvatting)
+## Ontologie (samenvatting)
 
 **Namespace:**  
-`https://example.org/lpo#`
+`https://linkeddata.cultureelerfgoed.nl/def/lpo#`
 
 **Belangrijkste klassen:**
 
@@ -49,7 +52,7 @@ De ontologie volgt het RDF/OWL-principe van minimale afhankelijkheden en is **vo
 
 ---
 
-## 🧭 URI-structuur
+## URI-structuur
 
 | Type | Patroon | Voorbeeld |
 |------|----------|-----------|
@@ -63,7 +66,7 @@ De ontologie volgt het RDF/OWL-principe van minimale afhankelijkheden en is **vo
 
 ---
 
-## ⚙️ Werkwijze
+## Werkwijze
 
 1. **Brondata inladen** in GraphDB (of andere triplestore).  
 2. **SPARQL CONSTRUCT** uitvoeren om data naar LPO-model te transformeren.  
@@ -77,7 +80,7 @@ De ontologie volgt het RDF/OWL-principe van minimale afhankelijkheden en is **vo
 
 ---
 
-## 🧩 Validatie
+## Validatie
 
 SHACL-validatie volgt de shapes in [`lpo-shapes.ttl`](./lpo-shapes.ttl):
 
@@ -97,14 +100,10 @@ SHACL-validatie volgt de shapes in [`lpo-shapes.ttl`](./lpo-shapes.ttl):
 
 ---
 
-## 🧭 Diagrammen
+## Diagrammen
 
-Visuele representaties van de ontologie staan in [`graphs/`](./graphs).
-
-- [Volledig model (Graphviz DOT)](https://dreampuf.github.io/GraphvizOnline/#digraph%20LPO_Place_Model%20%7B%0A%20rankdir%3DLR%3B...)  
-- [Blank nodes vs URI’s (kleurenschema)](https://dreampuf.github.io/GraphvizOnline/#digraph%20LPO_BlankNodes%20%7B%0A%20rankdir%3DLR%3B...)  
-
-Je kunt deze DOT-bestanden ook lokaal renderen naar SVG of PNG:
+De visuele representatie van het model staat als Graphviz DOT-code in [`lpo-styleguide.md`](./lpo-styleguide.md#4-conceptueel-diagram-graphviz). Plak die code in [GraphvizOnline](https://dreampuf.github.io/GraphvizOnline/) om het model te bekijken, of render het lokaal naar SVG of PNG:
 
 ```bash
-dot -Tsvg graphs/lpo_model.dot -o graphs/lpo_model.svg
+dot -Tsvg lpo_model.dot -o lpo_model.svg
+```

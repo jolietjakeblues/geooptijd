@@ -1,0 +1,35 @@
+{
+  "@context": {
+    "lpo": "https://linkeddata.cultureelerfgoed.nl/def/lpo#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "id": "@id",
+    "type": "@type",
+
+    "title": "lpo:hasTitle",
+    "sourceId": "lpo:sourceId",
+    "sourceDataset": "lpo:sourceDataset",
+    "sourceDatasetURI": { "@id": "lpo:sourceDatasetURI", "@type": "xsd:anyURI" },
+    "countryCode": "lpo:hasCountryCode",
+    "featureClass": "lpo:hasFeatureClass",
+
+    "names": { "@id": "lpo:hasName", "@container": "@set" },
+    "toponym": "lpo:toponym",
+    "language": "lpo:language",
+
+    "types": { "@id": "lpo:hasType", "@container": "@set" },
+    "identifier": { "@id": "lpo:identifier", "@type": "xsd:anyURI" },
+    "typeLabel": "lpo:typeLabel",
+
+    "geoms": { "@id": "lpo:hasGeom", "@container": "@set" },
+    "geowkt": "lpo:wktValue",
+    "reprPoint": "lpo:reprPoint",
+    "certainty": "lpo:certainty",
+
+    "whens": { "@id": "lpo:hasWhen", "@container": "@set" },
+    "start": "lpo:start",
+    "end": "lpo:end",
+    "earliest": "lpo:earliest",
+    "latest": "lpo:latest"
+  }
+}
